@@ -1,0 +1,15 @@
+- project:
+    check:
+      jobs: &id001
+        - cabal-test:
+            nodeset:
+              nodes:
+                - name: fedora-31
+                  label: pod-fedora-31
+        - hlint:
+            nodeset:
+              nodes:
+                - name: fedora-31
+                  label: pod-fedora-31
+    gate:
+      jobs: *id001
