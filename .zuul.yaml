@@ -5,11 +5,11 @@
             nodeset:
               nodes:
                 - name: fedora-31
-                  label: pod-fedora-31
+                  label: zuul-worker-f37
         - hlint:
             nodeset:
               nodes:
                 - name: fedora-31
-                  label: pod-fedora-31
+                  label: zuul-worker-f37
     gate:
       jobs: *id001

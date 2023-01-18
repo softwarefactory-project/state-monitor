@@ -13,6 +13,7 @@ where
 import Data.Maybe
 import Data.Text
 import Network.MQTT.Client
+import Network.MQTT.Topic (mkFilter)
 import Network.URI (parseURI)
 import Options.Generic
 import StateMonitor (newMessage)
@@ -31,10 +32,10 @@ main :: IO ()
 main = do
   args <- unwrapRecord "Test client"
   let unparsedUri = fromMaybe "mqtt://localhost" $ host args
-  let unparsedTopic = fromMaybe "test/" $ topic args
+  let parsedTopic = fromMaybe (error "Invalid Filter") $ mkFilter $ fromMaybe "test/" $ topic args
   let uri = fromMaybe (error $ "Invalid URI: " <> unpack unparsedUri) $ parseURI (unpack unparsedUri)
   mc <- connectURI mqttConfig {_msgCB = SimpleCallback msgReceived} uri
-  print =<< subscribe mc [(unparsedTopic, subOptions)] []
+  print =<< subscribe mc [(parsedTopic, subOptions)] []
   waitForClient mc -- wait for the the client to disconnect
   where
     msgReceived _ mtopic msg _ = newMessage mtopic msg
